@@ -40,3 +40,30 @@ public:
     }
 };
 
+// Compact Solution, but not much readable
+class Solution {
+public:
+    /*
+                    rootNode
+         leftNode            rightNode
+        forwardSlope        backwardSlope
+    */
+    vector<int> solve (TreeNode* node) {
+        vector<int> out {-1, -1, 0};
+        if (node == nullptr) {
+            return out;
+        }
+        auto left = solve (node->left);
+        auto right = solve (node->right);
+        out[2] = std::max (
+                    std::max (left[2], right[2]), 
+                    std::max(left[1], right[0]) + 1
+                );
+        out[0] = left[1] + 1;
+        out[1] = right[0] + 1;
+        return out;
+    }
+    int longestZigZag(TreeNode* root) {
+        return solve(root)[2];
+    }
+};
